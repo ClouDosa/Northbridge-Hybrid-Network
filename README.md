@@ -19,6 +19,12 @@ The project covers:
 - Site to site VPN connectivity using WireGuard
 - Hybrid network security testing across the local and AWS environments
 
+## Architecture
+
+The local side of the environment uses segmented VLANs, switching, local clients, a local server, and VyOS for routing and firewall control. The AWS side uses segmented cloud networking with public and private resources, route tables, and security groups.
+
+The two environments are connected through a WireGuard site to site VPN. This allows approved traffic from the local network to reach resources in the AWS private network while keeping access controlled on both sides.
+
 ## Network Diagram
 
 ![Northbridge network diagram](Northbridge/BSCNE%20Capstone%20Network%20Diagram.png)
@@ -98,6 +104,14 @@ The final test case validates security controls across the hybrid environment. T
 ![Admin SSH access allowed](Northbridge/Test%20Case%20%238%20-%20Hybrid%20Network%20Security%20-%20Testing%20Method%20-%20Admin%20SSH%20Access%20Allowed.png)
 
 ![Support application access allowed and SSH blocked](Northbridge/Test%20Case%20%238%20-%20Hybrid%20Network%20Security%20-%20Testing%20Method%20-%20Support%20Application%20Access%20Allowed%20and%20SSH%20Blocked.png)
+
+## Troubleshooting and Validation
+
+The project was tested by checking both successful and failed traffic instead of only confirming that devices could communicate.
+
+During VPN testing, I disabled the AWS WireGuard tunnel and confirmed that the local network could no longer reach the AWS private network. I then restored the tunnel and verified that connectivity returned. I also validated the VPN gateway configuration, including the source destination check setting required for forwarded traffic.
+
+Access controls were tested in the same way. Admin traffic was allowed where required, while support and unauthorized test clients were blocked from services they were not supposed to reach. These tests helped confirm that the firewall rules and AWS security groups were enforcing the intended design.
 
 ## Skills Demonstrated
 
